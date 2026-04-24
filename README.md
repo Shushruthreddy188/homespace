@@ -144,8 +144,38 @@ http://localhost:3000
 
 ## 📸 Screenshots / Demo
 
-*Add screenshots or a GIF demo here (highly recommended)*
+### 🏡 Landing Page – Search Experience
+<img width="2559" height="1389" alt="Landing Page" src="https://github.com/user-attachments/assets/922973be-4c93-4861-83a1-38cd5148670c" />
 
+> Clean and intuitive landing page with a unified search bar for browsing properties by location, neighborhood, or agent. Designed for quick discovery with minimal friction.
+
+---
+
+### 🔐 Authentication – Sign In Flow
+<img width="2559" height="1387" alt="Sign In" src="https://github.com/user-attachments/assets/eb637ad4-d0c8-47bd-bd56-9e4a11df9f9c" />
+
+> Secure and user-friendly authentication interface supporting login and account creation, forming the foundation for personalized user experiences.
+
+---
+
+### 👤 User Menu – Personalized Actions
+<img width="2559" height="1384" alt="User Menu" src="https://github.com/user-attachments/assets/3150d6f4-d497-4fb9-b677-6980d9a5b44b" />
+
+> Dynamic user profile dropdown enabling quick access to favorites, personal listings, and session management.
+
+---
+
+### 🏢 Rent Listings – Map + List View
+<img width="2556" height="1462" alt="Rent Listings" src="https://github.com/user-attachments/assets/cc96027c-f66b-48d1-9985-2894dc0263c6" />
+
+> Dual-pane layout combining property listings with an interactive map. Users can visually explore available rentals while viewing detailed listing information.
+
+---
+
+### 🏠 Buy Listings – Interactive Exploration
+<img width="2559" height="1468" alt="Buy Listings" src="https://github.com/user-attachments/assets/2eb4022d-9e40-457e-a32e-95c12dc41715" />
+
+> Seamless browsing experience for properties available for purchase, featuring map markers, filters, and structured listing cards.
 ---
 
 ## 🌟 Key Engineering Highlights
