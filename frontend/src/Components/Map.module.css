@@ -1,0 +1,89 @@
+/* Map.module.css */
+.mapContainer {
+  flex: 1;
+  height: 100%;
+  background-color: #f4f7f8;
+  position: relative;
+}
+
+.map {
+  height: 100%;
+}
+
+/* Stack this just under the zoom control (top-right) */
+/* Map.module.css */
+.locationButton {
+  position: absolute;
+  top: 96px; /* sits right under the zoom +/- */
+  right: 10px;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px; /* square corners like Google controls */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5f6368;
+  transition: all 0.2s ease;
+}
+
+.locationButton:hover {
+  background: #f8f9fa;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.locationButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Loading spinner keyframes */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Make Leaflet zoom control look closer to Google’s */
+:global(.leaflet-control-zoom) {
+  border: 2px solid rgba(0, 0, 0, 0.2) !important;
+  border-radius: 2px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+}
+
+:global(.leaflet-control-zoom a) {
+  background-color: white !important;
+  color: #5f6368 !important;
+  border: none !important;
+  width: 40px !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+}
+
+:global(.leaflet-control-zoom a:hover) {
+  background-color: #f8f9fa !important;
+}
+
+/* Optional: style Leaflet popups */
+:global(.leaflet-popup .leaflet-popup-content-wrapper) {
+  border-left: 5px solid #4f46e5;
+  border-radius: 5px;
+}

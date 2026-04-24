@@ -1,0 +1,103 @@
+.nav {
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inner {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  padding: 0 1rem;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.left a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.65rem 1.25rem;
+  color: #e0e0e0;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.32rem;
+  font-family: "Inter", "Poppins", "Segoe UI", Roboto, sans-serif;
+  letter-spacing: 0.3px;
+  border-bottom: 2px solid transparent;
+  border-radius: 4px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.left a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.left a.active {
+  color: #ffd166;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-color: #ffd166;
+  font-weight: 600;
+}
+
+.center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .inner {
+    padding: 0 0.75rem;
+  }
+
+  .left a {
+    padding: 0.6rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .inner {
+    padding: 0 0.5rem;
+  }
+
+  .left a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .inner {
+    padding: 0 0.25rem;
+  }
+
+  .left a {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+  }
+}

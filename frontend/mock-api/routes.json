@@ -1,0 +1,5 @@
+{
+  "/api/buy": "/buyListings",
+  "/api/rent": "/rentListings",
+  "/api/users": "/userListings"
+}

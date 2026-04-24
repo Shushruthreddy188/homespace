@@ -1,0 +1,9 @@
+target/
+*.log
+*.class
+.env
+application-local.yml
+application-dev.yml
+.idea/
+.vscode/
+node_modules/

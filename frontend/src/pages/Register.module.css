@@ -1,0 +1,240 @@
+.signup {
+  height: 100vh;
+  margin: 0;
+  background-image: linear-gradient(
+      rgba(44, 55, 58, 0.8),
+      rgba(36, 42, 46, 0.8)
+    ),
+    url("./bg.jpg");
+  border-top: 2px solid orange;
+  background-size: cover;
+  background-position: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 5rem;
+}
+
+.formContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  max-width: 550px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+.form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #ff6b35;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 0;
+  font-weight: 500;
+}
+
+.backButton:hover {
+  text-decoration: underline;
+}
+
+.emailDisplay {
+  font-size: 14px;
+  color: #666;
+  background-color: #f5f5f5;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.nameRow {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.nameField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row input,
+.nameField input {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.row input:focus,
+.nameField input:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+}
+
+.inputError {
+  border-color: #e74c3c !important;
+  background-color: #fdf2f2 !important;
+}
+
+.inputError:focus {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 4px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.errorMessage::before {
+  content: "⚠";
+  font-size: 12px;
+}
+
+.passwordHint {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+  padding-left: 4px;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 25px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.checkbox {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: #ff6b35;
+}
+
+.checkboxLabel {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.checkboxLabel strong {
+  color: #ff6b35;
+}
+
+.continueButton,
+.registerButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #fd8310;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 20px;
+}
+
+.continueButton:hover,
+.registerButton:hover {
+  background-color: #f08c29;
+}
+
+.continueButton:active,
+.registerButton:active {
+  transform: translateY(1px);
+}
+
+.loginLink {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  color: #ff6b35;
+  cursor: pointer;
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+.linkButton:hover {
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .signup {
+    padding: 1rem;
+  }
+
+  .form {
+    padding: 30px 20px;
+    max-width: 100%;
+  }
+
+  .nameRow {
+    flex-direction: column;
+    gap: 15px;
+  }
+}

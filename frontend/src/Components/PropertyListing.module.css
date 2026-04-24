@@ -1,0 +1,394 @@
+.listProperty {
+  min-height: 100vh;
+  margin: 0;
+  background-image: linear-gradient(
+      rgba(44, 55, 58, 0.8),
+      rgba(36, 42, 46, 0.8)
+    ),
+    url("./bg.jpg");
+  border-top: 2px solid orange;
+  background-size: cover;
+  background-position: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 5rem;
+}
+
+.formContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.form {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 40px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+/* Progress Bar */
+.progressBar {
+  margin-bottom: 40px;
+}
+
+.progressSteps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.progressStep {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.progressStep.active {
+  background-color: #fd8310;
+  color: white;
+}
+
+.progressLine {
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: #fd8310;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Headers */
+.form h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #fd8310;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 0;
+  font-weight: 500;
+}
+
+.backButton:hover {
+  text-decoration: underline;
+}
+
+.stepInfo {
+  font-size: 14px;
+  color: #666;
+  background-color: #f5f5f5;
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+
+/* Step 1: Listing Type */
+.listingTypeContainer {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.listingTypeOption {
+  flex: 1;
+  cursor: pointer;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.listingTypeOption:hover {
+  border-color: #fd8310;
+  transform: translateY(-2px);
+}
+
+.listingTypeOption.selected {
+  border-color: #fd8310;
+  background-color: #fff5f0;
+}
+
+.radioInput {
+  display: none;
+}
+
+.optionIcon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.optionContent h3 {
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.optionContent p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Form Fields */
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 25px;
+}
+
+.row label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.row input,
+.textarea {
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.row input:focus,
+.textarea:focus {
+  border-color: #fd8310;
+  box-shadow: 0 0 0 3px rgba(253, 131, 16, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.characterCount {
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+  margin-top: 4px;
+}
+
+.imageHint {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+/* Price and Bedroom Fields */
+.priceRow,
+.bedroomRow {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.priceField,
+.bedroomField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.priceField label,
+.bedroomField label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.priceField input,
+.bedroomField input {
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.priceField input:focus,
+.bedroomField input:focus {
+  border-color: #fd8310;
+  box-shadow: 0 0 0 3px rgba(253, 131, 16, 0.1);
+}
+
+/* Error Styling */
+.inputError {
+  border-color: #e74c3c !important;
+  background-color: #fdf2f2 !important;
+}
+
+.inputError:focus {
+  border-color: #e74c3c !important;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 6px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.errorMessage::before {
+  content: "⚠";
+  font-size: 14px;
+}
+
+.contextError {
+  background-color: #fdf2f2;
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Buttons */
+.continueButton,
+.submitButton {
+  width: 100%;
+  padding: 16px;
+  background-color: #fd8310;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  margin-top: 20px;
+}
+
+.continueButton:hover,
+.submitButton:hover {
+  background-color: #f08c29;
+}
+
+.continueButton:active,
+.submitButton:active {
+  transform: translateY(1px);
+}
+
+.submitButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submitButton:disabled:hover {
+  background-color: #ccc;
+}
+
+/* Help Text */
+.helpText {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  color: #666;
+}
+
+.linkButton {
+  background: none;
+  border: none;
+  color: #fd8310;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.linkButton:hover {
+  color: #f08c29;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .listProperty {
+    padding: 1rem;
+  }
+
+  .form {
+    padding: 30px 20px;
+    max-width: 100%;
+  }
+
+  .listingTypeContainer {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .priceRow,
+  .bedroomRow {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .stepHeader {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+}
