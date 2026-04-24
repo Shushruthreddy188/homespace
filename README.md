@@ -201,6 +201,6 @@ http://localhost:3000
 ## 👨‍💻 Author
 
 **Shushruth Kumar Reddy Mandadi**
-Full Stack Software Engineer
+* Software Engineer
 
 ---
