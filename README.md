@@ -1,18 +1,29 @@
 # 🏡 HomeSpace – Full Stack Real Estate Platform
 
-HomeSpace is a modern full-stack real estate application that enables users to explore, search, and visualize properties for buying and renting. It combines a high-performance Spring Boot backend with a responsive React frontend, designed with scalability and user experience in mind.
+HomeSpace is a production-style full-stack real estate platform that enables users to discover, explore, and interact with property listings through a map-driven experience.
+
+Built using Spring Boot + React, the system is designed with scalable backend architecture, optimized data handling, and a responsive UI for real-world usability.
+
+---
+
+## 🌐 Live Demo
+
+🚀 Frontend: https://your-frontend-url.vercel.app  
+⚙️ Backend API: https://your-backend-url.onrender.com  
+
+> ⚠️ Note: Backend may take a few seconds to wake up (free tier hosting)
 
 ---
 
 ## 🚀 Features
 
-### 🏘️ Listings
+### 🏘️ Property Listings
 
 * Browse properties for **buy** and **rent**
 * Dynamic filtering based on listing type
 * Clean and structured property data
 
-### 🗺️ Map Integration
+### 🗺️ Map-Based Integration
 
 * Interactive maps using **Leaflet**
 * Location-based property visualization
@@ -39,21 +50,23 @@ HomeSpace is a modern full-stack real estate application that enables users to e
 * React 18 + TypeScript
 * Tailwind CSS
 * Leaflet (Maps)
-* REST API integration
+* Axios (API calls)
 
 ### 🔹 Backend
 
-* Java 17/21
+* Java 21
 * Spring Boot
-* Spring Data JPA / Hibernate
-* H2 / MySQL
+* Spring Data JPA (Hibernate)
+* PostgreSQL / MySQL
 * REST APIs
 
 ### 🔹 Tools & DevOps
 
 * Git & GitHub
 * Maven
-* VS Code
+* Docker
+* Vercel (Frontend Deployment)
+* Render / EC2 (Backend Deployment)
 
 ---
 
