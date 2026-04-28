@@ -12,8 +12,8 @@ import L from "leaflet";
 import { useLocation } from "react-router-dom";
 import { useProperties } from "../contexts/PropertiesContext";
 import styles from "./Map.module.css";
-import { useGeolocation } from "../hooks/useGeolocation";
-import { useUrlPosition } from "../hooks/useUrlPosition";
+import { useGeolocation } from "../Hooks/useGeoLocation";
+import { useUrlPosition } from "../Hooks/useUrlPosition";
 import { useAuth } from "../contexts/FakeAuthContext";
 import MapPopupCard from "./MapPopupCard";
 
