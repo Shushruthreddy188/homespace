@@ -8,8 +8,8 @@ Built using Spring Boot + React, the system is designed with scalable backend ar
 
 ## 🌐 Live Demo
 
-🚀 Frontend: https://your-frontend-url.vercel.app  
-⚙️ Backend API: https://your-backend-url.onrender.com  
+🚀 Frontend: https://homespace-two.vercel.app  
+⚙️ Backend API: https://homespace-backend.onrender.com  
 
 > ⚠️ Note: Backend may take a few seconds to wake up (free tier hosting)
 
