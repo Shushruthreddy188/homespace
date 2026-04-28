@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
-import styles from "../Pages/Buy.module.css"; // reusing Buy styles for consistent layout
+import styles from "../pages/Buy.module.css"; // reusing Buy styles for consistent layout
 import { useAuth } from "../contexts/FakeAuthContext";
-import PropertyCard from "./Propertycard";
+import PropertyCard from "./PropertyCard";
 import { useProperties } from "../contexts/PropertiesContext";
 
 export default function Favorites() {
