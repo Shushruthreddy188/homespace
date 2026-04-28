@@ -11,7 +11,8 @@ const GOOGLE_GEOCODE_KEY = import.meta?.env?.VITE_GOOGLE_GEOCODE_KEY || "";
 const MAPBOX_TOKEN = import.meta?.env?.VITE_MAPBOX_TOKEN || "";
 const MAPSCO_API_KEY = import.meta?.env?.VITE_MAPSCO_API_KEY || "";
 // Updated to match your Spring Boot backend
-const BASE_URL = "http://localhost:4000";
+// const BASE_URL = "http://localhost:4000";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const PropertiesContext = createContext();
 
