@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import styles from "../Pages/Buy.module.css";
+import styles from "../pages/Buy.module.css";
 import { useAuth } from "../contexts/FakeAuthContext";
 import { useProperties } from "../contexts/PropertiesContext";
-import PropertyCard from "./Propertycard";
+import PropertyCard from "./PropertyCard";
 
 function normalize(list) {
   return (list || []).map((p) => ({
