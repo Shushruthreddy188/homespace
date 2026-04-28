@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import styles from "./Buy.module.css";
 import { useAuth } from "../contexts/FakeAuthContext";
 import { useProperties } from "../contexts/PropertiesContext";
-import PropertyCard from "../Components/Propertycard";
+import PropertyCard from "../Components/PropertyCard";
 import PropertyFilters from "../Components/PropertyFilters";
 
 function normalize(list) {
