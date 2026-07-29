@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProperties } from "../contexts/PropertiesContext";
 import styles from "./PropertyListing.module.css";
-import { useAuth } from "../contexts/FakeAuthContext";
+import { useAuth } from "../contexts/AuthContext";
+import { apiFetch } from "../api/client";
 
 export default function ListProperty() {
   const { user } = useAuth();
   const sessionUser =
-    user ?? JSON.parse(localStorage.getItem("user") || "null");
+    user ?? JSON.parse(localStorage.getItem("hs_auth_user") || "null");
   const currentUserId = sessionUser?.id;
-  const USER_API = "http://localhost:4000/users";
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     listingType: "", // "rent" or "sell"
@@ -252,7 +252,7 @@ export default function ListProperty() {
 
     // eslint-disable-next-line no-useless-catch
     try {
-      const res = await fetch(`${USER_API}/${currentUserId}`, {
+      const res = await apiFetch(`/users/${currentUserId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -276,7 +276,7 @@ export default function ListProperty() {
     if (!currentUserId) return;
     (async () => {
       try {
-        const res = await fetch(`${USER_API}/${currentUserId}`);
+        const res = await apiFetch(`/users/${currentUserId}`);
         if (!res.ok) throw new Error("Failed to load user");
         const u = await res.json();
         const buyIds = new Set(u?.listings?.buy ?? []);
@@ -286,7 +286,7 @@ export default function ListProperty() {
         console.error(e);
       }
     })();
-  }, [USER_API, currentUserId]);
+  }, [currentUserId]);
 
   function goToPrevStep() {
     if (currentStep > 1) {

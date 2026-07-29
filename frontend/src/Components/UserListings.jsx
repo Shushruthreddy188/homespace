@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "../pages/Buy.module.css";
-import { useAuth } from "../contexts/FakeAuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useProperties } from "../contexts/PropertiesContext";
 import PropertyCard from "./PropertyCard";
 
@@ -16,7 +16,7 @@ export default function UserListings() {
   // Get the logged-in user (fallback to localStorage)
   const { user } = useAuth();
   const sessionUser =
-    user ?? JSON.parse(localStorage.getItem("user") || "null");
+    user ?? JSON.parse(localStorage.getItem("hs_auth_user") || "null");
   const currentUserId = sessionUser?.id;
 
   const { properties, updateFavorites, favoriteIds } = useProperties();

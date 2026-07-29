@@ -10,7 +10,7 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const navigate = useNavigate();
-  const { login, isAuthenticated, authError } = useAuth();
+  const { login, loginWithGoogle, isAuthenticated, authError } = useAuth();
 
   // Validation functions
   function validateEmailOrPhone(value) {
@@ -138,6 +138,39 @@ export default function Login() {
           <button type="submit" className={styles.loginButton}>
             Sign In
           </button>
+
+          <button
+            type="button"
+            className={styles.googleButton}
+            onClick={loginWithGoogle}
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 48 48"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                fill="#FFC107"
+                d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22 22-9.8 22-22c0-1.2-.1-2.3-.4-3.5z"
+              />
+              <path
+                fill="#FF3D00"
+                d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.1 7.9 3l5.7-5.7C34.6 4.1 29.6 2 24 2 15.8 2 8.7 6.7 6.3 14.7z"
+              />
+              <path
+                fill="#4CAF50"
+                d="M24 46c5.5 0 10.4-2.1 14.1-5.5l-6.5-5.5c-2 1.5-4.7 2.5-7.6 2.5-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C8.6 41.2 15.7 46 24 46z"
+              />
+              <path
+                fill="#1976D2"
+                d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.5l6.5 5.5C41.6 36.3 46 31 46 24c0-1.2-.1-2.3-.4-3.5z"
+              />
+            </svg>
+            Continue with Google
+          </button>
+
           <div className={styles.forgotPassword}>
             <Link to="/forgot-password">Forgot password?</Link>
           </div>

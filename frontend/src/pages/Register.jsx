@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageNav from "../Components/PageNav";
 import styles from "./Register.module.css";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Signup() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -16,7 +17,7 @@ export default function Signup() {
   const [errors, setErrors] = useState({});
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const navigate = useNavigate();
-  const BASE_URL = "http://localhost:4000";
+  const { register } = useAuth();
 
   // Validation functions
   function validateEmail(email) {
@@ -119,28 +120,6 @@ export default function Signup() {
     const passwordError = validatePassword(formData.password);
     const phoneError = validatePhone(formData.phone);
 
-    async function userExists(email) {
-      const res = await fetch(
-        `${BASE_URL}/users?email=${encodeURIComponent(email)}`
-      );
-      if (!res.ok) throw new Error("Failed to check user");
-      const data = await res.json();
-      return data.length > 0;
-    }
-
-    async function createUser(payload) {
-      const res = await fetch(`${BASE_URL}/users`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Failed to create user");
-      }
-      return res.json();
-    }
-
     setErrors({
       firstName: firstNameError,
       lastName: lastNameError,
@@ -149,50 +128,28 @@ export default function Signup() {
     });
 
     if (firstNameError || lastNameError || passwordError || phoneError) return;
-    try {
-      // 1) uniqueness check
-      if (await userExists(formData.email)) {
-        setErrors((prev) => ({
-          ...prev,
-          email: "An account with this email already exists",
-        }));
-        return;
-      }
 
-      // 2) build user payload
-      const user = {
-        id: Date.now(), // json-server will also auto-ID if omitted
-        email: formData.email,
-        phone: formData.phone, // <- from step 1
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        // ⚠️ For demos only—don't store plaintext in production
-        password: formData.password,
-        role: formData.isAgent ? "agent" : "user",
-        favorites: {
-          buy: [],
-          rent: [],
-        },
-        listings: {
-          buy: [],
-          rent: [],
-        },
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      // 3) save
-      await createUser(user);
+    // Register through the auth API. On success the user is signed in (access token +
+    // refresh cookie), so we go straight into the app. Uniqueness is enforced
+    // server-side (409), surfaced here on the email field.
+    const result = await register({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      phone: formData.phone,
+      password: formData.password,
+      role: formData.isAgent ? "agent" : "user",
+    });
 
-      // 4) go to login (or straight to app if you prefer)
-      navigate("/login", {
-        state: { message: "Account created successfully!" },
-      });
-    } catch (err) {
-      console.error(err);
-      setErrors((prev) => ({
-        ...prev,
-        submit: "There was an error creating your account. Please try again.",
-      }));
+    if (result.ok) {
+      navigate("/AppLayout", { replace: true });
+      return;
+    }
+
+    if (/email/i.test(result.error || "")) {
+      setErrors((prev) => ({ ...prev, email: result.error }));
+    } else {
+      setErrors((prev) => ({ ...prev, submit: result.error }));
     }
   }
 

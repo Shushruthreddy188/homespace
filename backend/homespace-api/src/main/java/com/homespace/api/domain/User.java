@@ -20,8 +20,14 @@ public class User {
   @Column(name="first_name") private String firstName;
   @Column(name="last_name")  private String lastName;
 
+  // Nullable: users who sign in only via Google have no local password.
   @JsonIgnore
-  @Column(name="password", nullable=false) private String password;
+  @Column(name="password") private String password;
+
+  // Identity provider: LOCAL (email+password) or GOOGLE (OAuth2/OIDC).
+  @Column(name="auth_provider") private String authProvider;
+  // The subject id from the external provider (e.g. Google "sub"), if any.
+  @Column(name="provider_id") private String providerId;
 
   @Column(name="role")   private String role;
   @Column(name="avatar") private String avatar;
