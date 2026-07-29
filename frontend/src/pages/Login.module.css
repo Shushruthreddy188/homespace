@@ -93,6 +93,33 @@
   transform: translateY(1px);
 }
 
+.googleButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #fff;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.googleButton:hover {
+  background-color: #f7f8f8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.googleButton:active {
+  transform: translateY(1px);
+}
+
 .forgotPassword {
   text-align: center;
   margin: 20px 0;

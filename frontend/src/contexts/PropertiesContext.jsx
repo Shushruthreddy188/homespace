@@ -6,7 +6,8 @@ import {
   useReducer,
   useCallback,
 } from "react";
-import { useAuth } from "./FakeAuthContext";
+import { useAuth } from "./AuthContext";
+import { apiFetch } from "../api/client";
 const GOOGLE_GEOCODE_KEY = import.meta?.env?.VITE_GOOGLE_GEOCODE_KEY || "";
 const MAPBOX_TOKEN = import.meta?.env?.VITE_MAPBOX_TOKEN || "";
 const MAPSCO_API_KEY = import.meta?.env?.VITE_MAPSCO_API_KEY || "";
@@ -224,7 +225,7 @@ function PropertiesProvider({ children }) {
       }
       dispatch({ type: "favorites/loading" });
       try {
-        const res = await fetch(`${BASE_URL}/users/${user.id}/favorites`, {
+        const res = await apiFetch(`/users/${user.id}/favorites`, {
           signal: ctrl.signal,
         });
         if (!res.ok) {
@@ -277,7 +278,7 @@ function PropertiesProvider({ children }) {
       // console.log("updated favorites after dispatch:", favoriteIds);
 
       // Optionally sync with backend
-      const res = await fetch(`${BASE_URL}/users/${user.id}/favorites`, {
+      const res = await apiFetch(`/users/${user.id}/favorites`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -396,7 +397,7 @@ function PropertiesProvider({ children }) {
       const endpoint =
         mappedListingType === "rent" ? "rentListings" : "buyListings";
 
-      const res = await fetch(`${BASE_URL}/${endpoint}`, {
+      const res = await apiFetch(`/${endpoint}`, {
         method: "POST",
         body: JSON.stringify(propertyData),
         headers: { "Content-Type": "application/json" },
@@ -441,7 +442,7 @@ function PropertiesProvider({ children }) {
       const endpoint =
         updatedProperty.listingType === "rent" ? "rentListings" : "buyListings";
 
-      const res = await fetch(`${BASE_URL}/${endpoint}/${id}`, {
+      const res = await apiFetch(`/${endpoint}/${id}`, {
         method: "PUT",
         body: JSON.stringify(propertyData),
         headers: {
@@ -479,7 +480,7 @@ function PropertiesProvider({ children }) {
       const endpoint =
         property.listingType === "rent" ? "rentListings" : "buyListings";
 
-      const res = await fetch(`${BASE_URL}/${endpoint}/${id}`, {
+      const res = await apiFetch(`/${endpoint}/${id}`, {
         method: "DELETE",
       });
 

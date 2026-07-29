@@ -10,9 +10,10 @@ backend/target/
 backend/*.log
 backend/.env
 
-# IDE
+# IDE / tooling
 .vscode/
 .idea/
+.claude/
 
 # OS
 .DS_Store

@@ -7,7 +7,8 @@ import AppLayout from "./pages/AppLayout";
 import Buy from "./pages/Buy";
 import Homepage from "./pages/Homepage";
 import Register from "./pages/Register";
-import { AuthProvider } from "./contexts/FakeAuthContext";
+import OAuthCallback from "./pages/OAuthCallback";
+import { AuthProvider } from "./contexts/AuthContext";
 import PropertyListing from "./Components/PropertyListing";
 import { PropertiesProvider } from "./contexts/PropertiesContext";
 import Favorites from "./Components/Favorites";
@@ -23,6 +24,7 @@ function App() {
               <Route path="/" element={<Homepage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/oauth/callback" element={<OAuthCallback />} />
               <Route path="appLayout" element={<AppLayout />}>
                 <Route index element={<Navigate replace to="rent" />} />
                 <Route path="buy" element={<Buy />} />
