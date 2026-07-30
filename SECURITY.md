@@ -18,7 +18,7 @@ The platform now uses a real, layered scheme:
 | Session tokens | Self-issued **JWT** access tokens (HS256, 15 min) via Spring Security's `oauth2ResourceServer`. |
 | Refresh tokens | Opaque, **rotating**, stored server-side as SHA-256 hashes; delivered in an **httpOnly cookie**. Reuse of a rotated token revokes the whole family. |
 | Social login | **Google OAuth2 / OIDC** authorization-code flow → provisions/links a local user → mints our own JWT. |
-| Authorization | Listings are publicly readable; all mutations and user data require a valid token. A user can only read/modify **their own** account/favorites (`403` otherwise). |
+| Authorization | Listings are publicly readable; user data requires a valid token and a user can only read/modify **their own** account/favorites (`403` otherwise). Listing **mutations are role-gated** — only `agent`/`admin` may create, edit, or delete listings (`403` for `user`). |
 | Token storage (frontend) | Access token kept **in memory**; refresh token in the httpOnly cookie. Silent refresh on load and on `401`. |
 
 ### Key endpoints
@@ -32,7 +32,7 @@ The platform now uses a real, layered scheme:
 | GET | `/auth/me` | bearer | Current user |
 | GET | `/oauth2/authorization/google` | public | Start Google login |
 | GET | `/buyListings`, `/rentListings` | public | Browse listings |
-| POST/PUT/DELETE | `/buyListings`, `/rentListings` | bearer | Manage listings |
+| POST/PUT/DELETE | `/buyListings`, `/rentListings` | bearer + role `agent`/`admin` | Manage listings |
 | GET/PUT/PATCH | `/users/{id}/favorites` | bearer (self only) | Favorites |
 
 ## Running locally
