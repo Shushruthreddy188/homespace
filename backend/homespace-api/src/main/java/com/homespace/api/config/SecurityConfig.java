@@ -55,7 +55,11 @@ public class SecurityConfig {
             .requestMatchers("/auth/**", "/oauth2/**", "/login/**", "/error").permitAll()
             // Public read access to listings
             .requestMatchers(HttpMethod.GET, "/buyListings/**", "/rentListings/**").permitAll()
-            // Everything else (user data, favorites, listing mutations) requires a valid token
+            // Only agents/admins may create, edit, or remove listings.
+            .requestMatchers(HttpMethod.POST, "/buyListings/**", "/rentListings/**").hasAnyRole("AGENT", "ADMIN")
+            .requestMatchers(HttpMethod.PUT, "/buyListings/**", "/rentListings/**").hasAnyRole("AGENT", "ADMIN")
+            .requestMatchers(HttpMethod.DELETE, "/buyListings/**", "/rentListings/**").hasAnyRole("AGENT", "ADMIN")
+            // Everything else (user data, favorites) requires a valid token
             .anyRequest().authenticated()
         )
         .oauth2ResourceServer(oauth2 -> oauth2
