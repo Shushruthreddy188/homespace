@@ -193,7 +193,6 @@ export default function ListProperty() {
         maxBeds: parseInt(formData.maxBeds),
       };
 
-      console.log("Creating property with data:", propertyData);
       const created = await createProperty(propertyData);
       const createdId = created?.id;
 
