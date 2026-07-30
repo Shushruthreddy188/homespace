@@ -5,6 +5,7 @@ import {
   useContext,
   useReducer,
   useCallback,
+  useState,
 } from "react";
 import { useAuth } from "./AuthContext";
 import { apiFetch } from "../api/client";
@@ -154,6 +155,9 @@ function PropertiesProvider({ children }) {
     dispatch,
   ] = useReducer(reducer, initialState);
 
+  // Price/beds filter shared by the list (Buy) and the Map so both stay in sync.
+  const [listingFilters, setListingFilters] = useState({ price: "", beds: "" });
+
   const { user, isAuthenticated } = useAuth();
 
   // Get current user dynamically
@@ -167,10 +171,8 @@ function PropertiesProvider({ children }) {
 
   // Fetch all properties from both endpoints on mount
   useEffect(function () {
-    console.log("PropertiesProvider mounted, fetching properties...");
     async function fetchProperties() {
       dispatch({ type: "loading" });
-      console.log("Fetching properties from backend...");
 
       try {
         // Fetch from both endpoints
@@ -185,7 +187,6 @@ function PropertiesProvider({ children }) {
 
         const buyData = await buyRes.json();
         const rentData = await rentRes.json();
-        console.log("Fetched properties:", { buyData, rentData });
 
         // Ensure consistent data structure - backend should already have listingType
         const buyProperties = buyData.map((property) => ({
@@ -201,7 +202,6 @@ function PropertiesProvider({ children }) {
         // Combine both arrays
         const allProperties = [...buyProperties, ...rentProperties];
 
-        console.log("Combined properties:", allProperties);
         dispatch({ type: "properties/loaded", payload: allProperties });
       } catch (err) {
         console.error("Error fetching properties:", err);
@@ -291,7 +291,6 @@ function PropertiesProvider({ children }) {
         // Don't throw error - localStorage update succeeded
       }
 
-      console.log("Favorites updated successfully");
     } catch (err) {
       console.error("Failed to update favorites:", err);
       throw err;
@@ -326,7 +325,6 @@ function PropertiesProvider({ children }) {
             foundType = "buy";
           }
         } catch (err) {
-          console.log("Not found in buy listings:", err);
         }
 
         if (!data) {
@@ -337,7 +335,6 @@ function PropertiesProvider({ children }) {
               foundType = "rent";
             }
           } catch (err) {
-            console.log("Not found in rent listings:", err);
           }
         }
 
@@ -363,7 +360,6 @@ function PropertiesProvider({ children }) {
 
   async function createProperty(newProperty) {
     dispatch({ type: "loading" });
-    console.log("Creating property with data:", newProperty);
 
     try {
       const mappedListingType =
@@ -377,7 +373,6 @@ function PropertiesProvider({ children }) {
           const g = await geocodeAddress(newProperty.address.trim());
           lat = Number.isFinite(g.lat) ? g.lat : null;
           lon = Number.isFinite(g.lon) ? g.lon : null;
-          console.log("Geocoded:", { lat, lon, provider: g.provider });
         } catch (e) {
           console.warn("Geocode failed; proceeding without coords:", e);
         }
@@ -392,7 +387,6 @@ function PropertiesProvider({ children }) {
         // let backend set timestamps / id
       };
 
-      console.log("Final property data to be sent:", propertyData);
 
       const endpoint =
         mappedListingType === "rent" ? "rentListings" : "buyListings";
@@ -675,8 +669,10 @@ function PropertiesProvider({ children }) {
         currentProperty,
         error,
         filters,
+        listingFilters,
 
         // Actions
+        setListingFilters,
         getCurrentUser,
         getProperty,
         createProperty,

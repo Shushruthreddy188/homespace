@@ -76,8 +76,6 @@ export default function ContactAgentCard({ anchorRef, agent, onClose }) {
   const { fullName, company, email, phone, photoUrl } = agent || {};
 
   // Debug logging
-  console.log("Card position:", pos);
-  console.log("Agent data:", agent);
 
   return createPortal(
     <>

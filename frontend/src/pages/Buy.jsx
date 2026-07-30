@@ -1,136 +1,68 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./Buy.module.css";
-import { useAuth } from "../contexts/FakeAuthContext";
 import { useProperties } from "../contexts/PropertiesContext";
+import { applyListingFilters } from "../utils/propertyFilters";
+import { usePagination } from "../Hooks/usePagination";
+import { useFavoriteToggle } from "../Hooks/useFavoriteToggle";
 import PropertyCard from "../Components/PropertyCard";
 import PropertyFilters from "../Components/PropertyFilters";
-import { useLocation } from "react-router-dom";
+import Pagination from "../Components/Pagination";
 
 function normalize(list) {
-  return (list || []).map((p) => ({
-    ...p,
-    imageUrl: p.image || p.imageUrl || "",
-  }));
+  return (list || []).map((p) => ({ ...p, imageUrl: p.image || p.imageUrl || "" }));
 }
 
 export default function Buy() {
-  // Get the logged-in user from auth context
-  const { user } = useAuth();
   const location = useLocation();
-
-  // Get properties and favorites from global context
-  const { properties, isLoading, error, updateFavorites, favoriteIds } =
+  const { properties, isLoading, error, listingFilters, setListingFilters } =
     useProperties();
+  const { toggleFavorite, isFavorited } = useFavoriteToggle();
 
-  const [price, setPrice] = useState("");
-  const [beds, setBeds] = useState("");
-  const [applied, setApplied] = useState({ price: "", beds: "" });
-  const [currentFavorites, setCurrentFavorites] = useState([]);
-
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  // Pending selections; committed to the shared filter on "Apply".
+  const [price, setPrice] = useState(listingFilters.price);
+  const [beds, setBeds] = useState(listingFilters.beds);
 
   const currentListingType = useMemo(() => {
     if (location.pathname.includes("/rent")) return "rent";
     if (location.pathname.includes("/buy")) return "buy";
     return "all";
   }, [location.pathname]);
-  console.log(currentListingType);
-  // Filter properties for buy listings only
-  const currentProperties = useMemo(() => {
-    return normalize(
-      properties.filter(
-        (p) => p.listingType === currentListingType || p.listingType === "sell"
-      )
-    );
-  }, [currentListingType, properties]);
 
-  useEffect(() => {
-    setCurrentFavorites(favoriteIds || []);
-  }, [favoriteIds]);
+  const pageTitle =
+    currentListingType === "rent"
+      ? "Homes for Rent"
+      : currentListingType === "buy"
+        ? "Homes for Sale"
+        : "All Homes";
 
-  // Apply filters to buy properties
-  const filtered = useMemo(() => {
-    let list = currentProperties.slice();
+  const currentProperties = useMemo(
+    () =>
+      normalize(
+        properties.filter(
+          (p) => p.listingType === currentListingType || p.listingType === "sell",
+        ),
+      ),
+    [currentListingType, properties],
+  );
 
-    if (applied.price) {
-      const [min, max] = applied.price.split("-").map(Number);
-      list = list.filter((p) => !(p.maxPrice < min || p.minPrice > max));
-    }
+  const filtered = useMemo(
+    () => applyListingFilters(currentProperties, listingFilters),
+    [currentProperties, listingFilters],
+  );
 
-    if (applied.beds) {
-      if (applied.beds === "3+") {
-        list = list.filter((p) => p.maxBeds >= 3);
-      } else {
-        const b = Number(applied.beds);
-        list = list.filter((p) => p.minBeds <= b && p.maxBeds >= b);
-      }
-    }
-
-    return list;
-  }, [currentProperties, applied]);
-
-  // Pagination calculations
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = filtered.slice(startIndex, endIndex);
+  const {
+    currentPage,
+    setCurrentPage,
+    totalPages,
+    startIndex,
+    endIndex,
+    currentItems,
+  } = usePagination(filtered, 10);
 
   const handleApply = () => {
-    setApplied({ price, beds });
+    setListingFilters({ price, beds });
     setCurrentPage(1);
-  };
-
-  // Toggle favorite using global context
-  const handleFavorite = async (property) => {
-    console.log("Toggling favorite for property:", property);
-    if (!user?.id) {
-      alert("Please sign in to save favorites.");
-      return;
-    }
-
-    try {
-      const propertyId = property.id;
-
-      let updatedFavorites;
-      if (currentFavorites.includes(propertyId)) {
-        // Remove from favorites
-        updatedFavorites = currentFavorites.filter((id) => id !== propertyId);
-      } else {
-        // Add to favorites
-        updatedFavorites = [...currentFavorites, propertyId];
-      }
-
-      await updateFavorites(updatedFavorites);
-    } catch (error) {
-      alert("Failed to update favorites. Please try again.");
-    }
-  };
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    document.querySelector(`.${styles.propertiesGrid}`)?.scrollTo(0, 0);
-  };
-
-  const generatePageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 5;
-
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) pages.push(i);
-    return pages;
-  };
-
-  // Check if property is favorited
-  const isPropertyFavorited = (propertyId) => {
-    return favoriteIds.includes(propertyId);
   };
 
   if (isLoading) return <div className={styles.loading}>Loading…</div>;
@@ -147,6 +79,19 @@ export default function Buy() {
 
   return (
     <div className={styles.buyContainer}>
+      <div className={styles.listHeader}>
+        <h1 className={styles.listTitle}>{pageTitle}</h1>
+        <span className={styles.listCount}>
+          {filtered.length} {filtered.length === 1 ? "home" : "homes"}
+          {totalPages > 1 && (
+            <span className={styles.pageInfo}>
+              {" "}· {startIndex + 1}–{Math.min(endIndex, filtered.length)} of{" "}
+              {filtered.length}
+            </span>
+          )}
+        </span>
+      </div>
+
       <PropertyFilters
         priceValue={price}
         bedsValue={beds}
@@ -155,73 +100,27 @@ export default function Buy() {
         onApply={handleApply}
       />
 
-      <div className={styles.resultsInfo}>
-        <span>
-          {filtered.length} properties found
-          {totalPages > 1 && (
-            <span className={styles.pageInfo}>
-              {" "}
-              • Showing {startIndex + 1}-{Math.min(endIndex, filtered.length)}{" "}
-              of {filtered.length}
-            </span>
-          )}
-        </span>
-      </div>
-
       <div className={styles.propertiesGrid}>
-        {currentItems.map((property) => {
-          const propertyId = property.id;
-          const isFav = isPropertyFavorited(propertyId);
-
-          return (
-            <PropertyCard
-              key={propertyId}
-              property={property}
-              onFavorite={handleFavorite}
-              onContact={(property) =>
-                alert(`Contact agent for: ${property.name}`)
-              }
-              isFavorited={isFav}
-            />
-          );
-        })}
+        {currentItems.length === 0 && (
+          <div className={styles.emptyState}>
+            No homes match your filters. Try widening your search.
+          </div>
+        )}
+        {currentItems.map((property) => (
+          <PropertyCard
+            key={property.id}
+            property={property}
+            onFavorite={toggleFavorite}
+            isFavorited={isFavorited(property.id)}
+          />
+        ))}
       </div>
 
-      {totalPages > 1 && (
-        <div className={styles.pagination}>
-          <button
-            className={`${styles.pageBtn} ${
-              currentPage === 1 ? styles.disabled : ""
-            }`}
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-
-          {generatePageNumbers().map((page) => (
-            <button
-              key={page}
-              className={`${styles.pageBtn} ${
-                currentPage === page ? styles.active : ""
-              }`}
-              onClick={() => handlePageChange(page)}
-            >
-              {page}
-            </button>
-          ))}
-
-          <button
-            className={`${styles.pageBtn} ${
-              currentPage === totalPages ? styles.disabled : ""
-            }`}
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-        </div>
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChange={setCurrentPage}
+      />
     </div>
   );
 }

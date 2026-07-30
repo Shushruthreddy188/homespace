@@ -10,7 +10,6 @@ export default function Homepage() {
   const handleSearch = (e) => {
     e.preventDefault();
     // Handle search logic here
-    console.log(`Searching for ${searchType}: ${searchQuery}`);
   };
 
   return (

@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-
 import { useState, useMemo, useRef } from "react";
-import { useAuth } from "../contexts/FakeAuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import ContactAgentCard from "./ContactAgentCard";
 import styles from "../pages/Buy.module.css";
 
-// eslint-disable-next-line react/prop-types
+const fmt = (n) => (Number.isFinite(Number(n)) ? Number(n).toLocaleString() : n);
+
 function PropertyCard({ property, onFavorite, isFavorited = false }) {
   const { user } = useAuth();
   const [showAgent, setShowAgent] = useState(false);
@@ -24,7 +24,7 @@ function PropertyCard({ property, onFavorite, isFavorited = false }) {
       photoUrl: user?.avatarUrl || "",
     };
   }, [user]);
-  // eslint-disable-next-line react/prop-types
+
   const {
     name,
     address,
@@ -34,90 +34,97 @@ function PropertyCard({ property, onFavorite, isFavorited = false }) {
     maxBeds,
     description,
     image,
+    listingType,
   } = property;
 
+  const isRent = String(listingType).toLowerCase() === "rent";
+  const bedsLabel =
+    minBeds === maxBeds
+      ? `${minBeds} Bed${minBeds > 1 ? "s" : ""}`
+      : `${minBeds}–${maxBeds} Beds`;
+
   return (
-    <div className={styles.propertyCard}>
+    <article className={styles.propertyCard}>
       <div className={styles.imageContainer}>
+        <span className={`${styles.typeBadge} ${isRent ? "" : styles.sale}`}>
+          {isRent ? "For Rent" : "For Sale"}
+        </span>
         <img src={image} alt={name} className={styles.propertyImage} />
+
+        <button
+          type="button"
+          className={styles.favoriteBtn}
+          aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
+          aria-pressed={isFavorited}
+          onClick={(e) => {
+            onFavorite?.(property);
+            e.currentTarget.blur();
+          }}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill={isFavorited ? "var(--color-accent)" : "none"}
+            stroke={isFavorited ? "var(--color-accent)" : "#37414a"}
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+        </button>
       </div>
 
       <div className={styles.propertyInfo}>
         <div className={styles.priceRange}>
-          ${minPrice} - ${maxPrice} per month
+          ${fmt(minPrice)} – ${fmt(maxPrice)}
+          {isRent && <span className={styles.priceUnit}> /mo</span>}
         </div>
+
         <h3 className={styles.propertyName}>{name}</h3>
-        <div className={styles.bedInfo}>
-          {minBeds === maxBeds
-            ? `${minBeds} Bed${minBeds > 1 ? "s" : ""}`
-            : `${minBeds} - ${maxBeds} Beds`}
+
+        <div className={styles.metaRow}>
+          <span className={styles.metaItem}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path d="M2 4v16M2 8h18a2 2 0 0 1 2 2v10M2 17h20M6 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            {bedsLabel}
+          </span>
         </div>
-        <div className={styles.address}>{address}</div>
 
-        <p className={styles.description}>
-          {description.length > 200
-            ? `${description.substring(0, 200)}...`
-            : description}
-        </p>
+        <div className={styles.address}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          {address}
+        </div>
 
-        <div className={styles.contactAgentWrap}>
-          <button
-            ref={btnRef}
-            type="button"
-            className={styles.contactAgentBtn}
-            onClick={() => setShowAgent((v) => !v)}
-          >
-            Need Help? Contact Agent
-          </button>
+        {description && <p className={styles.description}>{description}</p>}
+
+        <div className={styles.cardFooter}>
+          <div className={styles.contactAgentWrap}>
+            <button
+              ref={btnRef}
+              type="button"
+              className={styles.contactAgentBtn}
+              onClick={() => setShowAgent((v) => !v)}
+            >
+              Contact Agent
+            </button>
+
+            {showAgent && (
+              <ContactAgentCard
+                anchorRef={btnRef}
+                agent={agent}
+                onClose={() => setShowAgent(false)}
+              />
+            )}
+          </div>
         </div>
       </div>
-
-      {showAgent && (
-        <ContactAgentCard
-          anchorRef={btnRef}
-          agent={agent}
-          onClose={() => setShowAgent(false)}
-        />
-      )}
-
-      <button
-        type="button"
-        className={`${styles.favoriteBtn} ${
-          isFavorited ? styles.favorited : ""
-        }`}
-        aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
-        aria-pressed={isFavorited}
-        onClick={(e) => {
-          onFavorite?.(property);
-          e.currentTarget.blur();
-        }}
-        onMouseLeave={(e) => e.currentTarget.blur()}
-      >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 24 24"
-          fill={isFavorited ? "#ff3040" : "none"}
-          stroke={isFavorited ? "#ff3040" : "#262626"}
-          strokeWidth={isFavorited ? "0" : "1.5"}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          style={{
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-            transform: isFavorited ? "scale(1.1)" : "scale(1)",
-          }}
-        >
-          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-        </svg>
-      </button>
-    </div>
+    </article>
   );
 }
-
-PropertyCard.propTypes = {
-  // …
-};
 
 export default PropertyCard;

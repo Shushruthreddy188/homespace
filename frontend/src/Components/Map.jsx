@@ -11,10 +11,11 @@ import {
 import L from "leaflet";
 import { useLocation } from "react-router-dom";
 import { useProperties } from "../contexts/PropertiesContext";
+import { applyListingFilters } from "../utils/propertyFilters";
 import styles from "./Map.module.css";
 import { useGeolocation } from "../Hooks/useGeoLocation";
 import { useUrlPosition } from "../Hooks/useUrlPosition";
-import { useAuth } from "../contexts/FakeAuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import MapPopupCard from "./MapPopupCard";
 
 export default function Map() {
@@ -24,7 +25,7 @@ export default function Map() {
   const { user } = useAuth();
   const userId = user?.id;
 
-  const { properties, favoriteIds } = useProperties();
+  const { properties, favoriteIds, listingFilters } = useProperties();
   const location = useLocation();
 
   const {
@@ -68,9 +69,15 @@ export default function Map() {
     return baseForRoute;
   }, [baseForRoute, location.pathname]);
 
+  // Apply the same price/beds filter the list uses, so markers stay in sync.
+  const visibleProperties = useMemo(
+    () => applyListingFilters(filteredByRoute, listingFilters),
+    [filteredByRoute, listingFilters],
+  );
+
   // Use only properties that already have coords in db.json
   const withCoords = useMemo(() => {
-    return filteredByRoute
+    return visibleProperties
       .map((p) => {
         const latNum = Number(p.lat);
         const lonNum = Number(p.lon);
@@ -80,7 +87,7 @@ export default function Map() {
         return null;
       })
       .filter(Boolean);
-  }, [filteredByRoute]);
+  }, [visibleProperties]);
 
   // Center from URL (if provided)
   useEffect(() => {
@@ -143,7 +150,7 @@ export default function Map() {
         ))}
       </MapContainer>
 
-      {!withCoords.length && filteredByRoute.length > 0 && (
+      {!withCoords.length && visibleProperties.length > 0 && (
         <div style={{ marginTop: 8, color: "#e74c3c" }}>
           No coordinates found for{" "}
           {currentListingType === "all" ? "" : currentListingType} properties.
@@ -152,7 +159,7 @@ export default function Map() {
         </div>
       )}
 
-      {!filteredByRoute.length && (
+      {!visibleProperties.length && (
         <div style={{ marginTop: 8, color: "#e74c3c" }}>
           No {currentListingType === "all" ? "" : currentListingType} properties
           found.
